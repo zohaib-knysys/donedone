@@ -1,9 +1,11 @@
+from skpy import Skype
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
+from datetime import date
 import time
 import sys
 
@@ -83,9 +85,18 @@ def more_susti():
     driver.find_element(By.ID,'log-in').send_keys(Keys.RETURN)
     time.sleep(2)
     driver.find_elements(By.XPATH,'//span[contains(text(), "Stop")]')[0].click()
-    time.sleep(5)
+    total_time = driver.find_element(By.XPATH,'//*[@id="day-view-entries"]/tfoot/tr/td[2]').text
+    time.sleep(2)
     driver.close()
-    return "Remember to start again !!"
+    return total_time
+
+
+def ghr_ja_rha():
+    my_total_time = more_susti()
+    sk = Skype("mzohaib.knysys@gmail.com", "knysys@123")
+    adeel_bhai = sk.contacts['live:.cid.758b84fcabd9de9d']
+    ghufran = sk.contacts['live:.cid.1f00649356121c76']
+    adeel_bhai.chat.sendMsg('Date: '+str(date.today())+'\nMy total time : '+ my_total_time)
 
 
 
@@ -117,6 +128,8 @@ if __name__ == "__main__":
             more_susti()
         elif sys.argv[1] == "continue":
             khana_khalia()
+        elif sys.argv[1] == "out":
+            ghr_ja_rha()
         else:
             print('Neend mai hai kya?')
     else:
