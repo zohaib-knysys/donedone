@@ -83,7 +83,27 @@ def more_susti():
     driver.find_element(By.ID,'log-in').send_keys(Keys.RETURN)
     time.sleep(2)
     driver.find_elements(By.XPATH,'//span[contains(text(), "Stop")]')[0].click()
-    print('Got ya')
+    time.sleep(5)
+    driver.close()
+    return "Remember to start again !!"
+
+
+
+def khana_khalia():
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_experimental_option("useAutomationExtension", False)
+    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    driver = webdriver.Chrome(options=chrome_options,service=Service(ChromeDriverManager().install()))
+    driver.maximize_window()
+    driver.get("https://3dusernetltd.harvestapp.com/time")
+    email = driver.find_element(By.ID,'email')
+    email.send_keys('ahasan@knysys.com')
+    password = driver.find_element(By.ID,'password')
+    password.send_keys('knysys@123')
+    time.sleep(2)
+    driver.find_element(By.ID,'log-in').send_keys(Keys.RETURN)
+    time.sleep(2)
+    driver.find_elements(By.XPATH,'//span[contains(text(), "Start")]')[-1].click()
     time.sleep(5)
     driver.close()
     return "Remember to start again !!"
@@ -95,6 +115,8 @@ if __name__ == "__main__":
     elif len(sys.argv) == 2:
         if sys.argv[1] == "stop":
             more_susti()
+        elif sys.argv[1] == "continue":
+            khana_khalia()
         else:
             print('Neend mai hai kya?')
     else:
