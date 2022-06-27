@@ -1,3 +1,4 @@
+#!/usr/bin/pyhton3
 from skpy import Skype
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -8,10 +9,11 @@ from selenium.webdriver.chrome.options import Options
 from datetime import date
 import time
 import sys
-
+import os
 
 def susti():
     chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--no-sandbox')
     chrome_options.add_experimental_option("useAutomationExtension", False)
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
     driver = webdriver.Chrome(options=chrome_options,service=Service(ChromeDriverManager().install()))
@@ -72,6 +74,7 @@ def susti():
 
 def more_susti():
     chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--no-sandbox')
     chrome_options.add_experimental_option("useAutomationExtension", False)
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
     driver = webdriver.Chrome(options=chrome_options,service=Service(ChromeDriverManager().install()))
@@ -85,6 +88,10 @@ def more_susti():
     driver.find_element(By.ID,'log-in').send_keys(Keys.RETURN)
     time.sleep(2)
     driver.find_elements(By.XPATH,'//span[contains(text(), "Stop")]')[0].click()
+    lastTaskRef = driver.find_elements(By.CLASS_NAME,'remote-entry-data')[-1].text
+    lastTaskRef = lastTaskRef.split(':')[0].split('#')[1]
+    replace_task_ref_cmd = f"sed -i '/lastTaskRef/c\export lastTaskRef={lastTaskRef}' ~/.bashrc" 
+    os.system(replace_task_ref_cmd)
     total_time = driver.find_element(By.XPATH,'//*[@id="day-view-entries"]/tfoot/tr/td[2]').text
     time.sleep(2)
     driver.close()
